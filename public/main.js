@@ -3,8 +3,21 @@ var SpacebookApp = function() {
       var posts = [];
     
       var $posts = $(".posts");
+
+      $.ajax({
+        method: "GET",
+        url: 'http://localhost:8000/posts',
+        // dataType: "json",
+        success: function (data) {
+            posts.push(data);
+            _renderPosts();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(textStatus);
+        }
+    });
     
-      _renderPosts();
+      
     
       function _renderPosts() {
         $posts.empty();

@@ -7,14 +7,21 @@ var mongoose = require('mongoose');
 //you only need a posts collection
 
 var commentSchema = new mongoose.Schema({
-
+    text: String,
+    user: String
 });
 
+var Comment = mongoose.model('comment', commentSchema);
 
 var postSchema = new mongoose.Schema({
-
+    text: String,
+    comments: [commentSchema]
 });
 
-var Post = mongoose.model('post', postSchema)
+var Post = mongoose.model('post', postSchema);
 
-module.exports = Post
+var heyPost = new Post({ text: 'hey'});
+heyPost.save();
+heyPost.comments.push({ text: 'hey', user: 'mc' });
+
+module.exports = Post;
