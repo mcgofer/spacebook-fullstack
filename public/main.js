@@ -9,7 +9,7 @@ var SpacebookApp = function() {
         url: 'http://localhost:8000/posts',
         // dataType: "json",
         success: function (data) {
-            posts.push(data);
+            posts = data;
             _renderPosts();
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -84,6 +84,21 @@ var SpacebookApp = function() {
         app.addPost($input.val());
         $input.val("");
       }
+
+      $.ajax({
+        method: "POST",
+        url: 'http://localhost:8000/posts',
+        data: { text: $('#postText').val() },
+        // dataType: "json",
+        success: function(data) {
+
+          console.log(data);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          console.log(textStatus);
+        }
+      });
+
     });
     
     var $posts = $(".posts");
