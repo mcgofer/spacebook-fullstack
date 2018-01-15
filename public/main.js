@@ -3,8 +3,21 @@ var SpacebookApp = function() {
       var posts = [];
     
       var $posts = $(".posts");
+
+      $.ajax({
+        method: "GET",
+        url: 'http://localhost:8000/posts',
+        // dataType: "json",
+        success: function (data) {
+            posts = data;
+            _renderPosts();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(textStatus);
+        }
+    });
     
-      _renderPosts();
+      
     
       function _renderPosts() {
         $posts.empty();
@@ -71,6 +84,21 @@ var SpacebookApp = function() {
         app.addPost($input.val());
         $input.val("");
       }
+
+      $.ajax({
+        method: "POST",
+        url: 'http://localhost:8000/posts',
+        data: { text: $('#postText').val() },
+        // dataType: "json",
+        success: function(data) {
+
+          console.log(data);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          console.log(textStatus);
+        }
+      });
+
     });
     
     var $posts = $(".posts");
