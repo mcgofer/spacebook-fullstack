@@ -20,8 +20,5 @@ var postSchema = new mongoose.Schema({
 
 var Post = mongoose.model('post', postSchema);
 
-var heyPost = new Post({ text: 'hey'});
-heyPost.save();
-heyPost.comments.push({ text: 'hey', user: 'mc' });
 
 module.exports = Post;

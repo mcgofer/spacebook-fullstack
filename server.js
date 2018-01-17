@@ -9,7 +9,7 @@ mongoose.connect('mongodb://localhost/spacebookDB', function () {
 var Post = require('./models/postModel');
 
 // var heyPost = new Post({ text: 'hey' });
-// // heyPost.save();
+// heyPost.save();
 // heyPost.comments.push({ text: 'hello', user: 'mc' });
 
 
@@ -32,7 +32,7 @@ app.get("/posts", function (req, res) {
             // it means the database had an error while searching, hence the 500 status
             res.status(500).send(err)
         } else {
-            // send the list of all people
+            // send the list of all posts
             res.status(200).send(post);
         }
     });
@@ -40,12 +40,29 @@ app.get("/posts", function (req, res) {
 
 // 2) to handle adding a post
 
-app.post("/posts", function (req, res) {
-    console.log(req.body);
-    console.log('Data saved to file!');
+app.post('/posts', function (req, res) {
+    var postItem = new Post({
+        text: req.body.text,
+        comments: []
+    });
+    console.log(postItem);
+    postItem.save(function (err, post) {
+        if(err) throw err;
+        res.send(post);
+    });
+
 });
 
+
 // 3) to handle deleting a post
+
+app.delete('/posts/:id', function (req, res) {
+    Post.findByIdAndRemove(req.params.id, function(err, post){
+        if(err) throw err;
+        res.send(post);
+    });
+});
+
 // 4) to handle adding a comment to a post
 
 // app.post("/posts", function(req, res) {
