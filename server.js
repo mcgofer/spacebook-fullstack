@@ -82,6 +82,20 @@ app.post('/posts/:id/comments', function (req, res) {
 
 // 5) to handle deleting a comment from a post
 
+app.delete('/posts/:postID/comments/:commentID', function (req, res) {
+    var postID = req.params.postID;
+    var commentID = req.params.commentID;
+    Post.findById(postID, function (err, post) {
+        post.comments.id(commentID).remove();
+        post.save(function (err, post) {
+            if (err) throw err;
+            res.send(post);
+        });
+    });
+});
+
+//Listening port
+
 app.listen(8000, function () {
     console.log("what do you want from me! get me on 8000 ;-)");
 });
