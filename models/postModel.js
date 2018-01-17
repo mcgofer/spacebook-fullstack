@@ -16,7 +16,7 @@ var Comment = mongoose.model('comment', commentSchema);
 var postSchema = new mongoose.Schema({
     text: String,
     comments: [commentSchema]
-});
+}, {usePushEach: true});
 
 var Post = mongoose.model('post', postSchema);
 

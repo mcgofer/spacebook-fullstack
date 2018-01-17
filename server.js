@@ -47,31 +47,39 @@ app.post('/posts', function (req, res) {
     });
     console.log(postItem);
     postItem.save(function (err, post) {
-        if(err) throw err;
+        if (err) throw err;
         res.send(post);
     });
-
 });
 
 
 // 3) to handle deleting a post
 
 app.delete('/posts/:id', function (req, res) {
-    Post.findByIdAndRemove(req.params.id, function(err, post){
-        if(err) throw err;
+    Post.findByIdAndRemove(req.params.id, function (err, post) {
+        if (err) throw err;
         res.send(post);
     });
 });
 
 // 4) to handle adding a comment to a post
 
-// app.post("/posts", function(req, res) {
-//     console.log(req.body);
-//     fs.writeFile('test.txt', JSON.stringify(req.body), function(err) {
-//       if (err) throw err;
-//       else console.log('Data saved to file!');
-//     });
-//   });
+app.post('/posts/:id/comments', function (req, res) {
+    var comment = {
+        text: req.body.text,
+        user: req.body.user
+    }
+
+    Post.findById(req.params.id, function (err, post) {
+        // if (err) throw err;
+        post.comments.push(comment);
+        post.save(function (err, post) {
+            if (err) throw err;
+            res.send(comment);
+        });
+    });
+});
+
 // 5) to handle deleting a comment from a post
 
 app.listen(8000, function () {

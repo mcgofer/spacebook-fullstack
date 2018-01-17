@@ -63,7 +63,7 @@ var SpacebookApp = function() {
   
     var removePost = function(index) {
       $.ajax({
-        url: '/posts/' + $('.post').data().id,
+        url: '/posts/' + posts[index]._id,
         method: 'DELETE',
         success: function (data) {
           posts.splice(index, 1);
@@ -77,8 +77,20 @@ var SpacebookApp = function() {
     };
   
     var addComment = function(newComment, postIndex) {
-      posts[postIndex].comments.push(newComment);
-      _renderComments(postIndex);
+      $.ajax({
+        method: "POST",
+        url: '/posts/' + posts[postIndex]._id + '/comments',
+        data: newComment,
+        // dataType: "json",
+        success: function(data) {
+          posts[postIndex].comments.push(data);
+          _renderComments(postIndex);
+          console.log(newComment);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          console.log(textStatus);
+        }
+      });
     };
   
   
